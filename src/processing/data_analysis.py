@@ -47,6 +47,7 @@ def get_job_title_category(df):
     return df
 
 def get_companies_with_highest_job_postings(df):
+    
     company_counts = df['Company Name'].value_counts()
     return company_counts
 

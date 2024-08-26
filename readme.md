@@ -19,7 +19,7 @@ Additionally, You can also run ipynb file to get analytics of the project.
 In order to run ipynb file, execute the line and create a kernel for ipynb or use jupyter.
 
 To execute main project
-- Run python run_main.py to execute
+- Run python main.py to execute
 
 ## Project Requirements:
 1. Tools and Technologies:
@@ -50,7 +50,7 @@ Files involved:
 6. Models - contains sql connection and decorators logic
 7. Services - contains db connection
 8. Visualisation - stores visualisation functions
-9. run-main.py - This file is the starting execution point
+9. main.py - This file is the starting execution point
 10. Analysis_data - analysis file
 11. docs - stores user guide and information for project
 
