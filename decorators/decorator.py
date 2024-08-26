@@ -14,7 +14,7 @@ def save_plot_decorator(func):
             # Generate a unique filename based on function name and hash
             func_name = func.__name__
             hash_value = hashlib.md5(str(args).encode('utf-8')).hexdigest()[:6]
-            filename = os.path.join('visualisation', f"{func_name}_{hash_value}.png") 
+            filename = os.path.join('data', f"{func_name}_{hash_value}.png") 
             
             if os.path.exists(filename):
                 override_choice = input(f"File '{filename}' already exists. Do you want to override it? (yes/no): ").strip().lower()

@@ -7,6 +7,7 @@ from datetime import datetime
 from sklearn.cluster import KMeans
 from collections import Counter
 import re
+from decorators.decorator import save_to_excel, log_function_call
 
 def load_data(file_path):
     df = pd.read_csv(file_path)
@@ -39,6 +40,8 @@ def categorize_by_frequency(title):
     else:
         return 'Other'
 
+@save_to_excel
+@log_function_call('logs/analysis_logs.log')
 def get_job_title_category(df):
     df['Job Title Category'] = df['Job Title'].apply(categorize_by_frequency)
     return df

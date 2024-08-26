@@ -6,11 +6,11 @@ from wordcloud import WordCloud
 from sklearn.cluster import KMeans
 from collections import Counter
 from re import search
+from decorators.decorator import save_plot_decorator, save_to_excel
 
 from ..processing.data_analysis import get_location
 
-# Load the data
-df = pd.read_csv('C:/Users/sneha.gupta/Crash_course/Naukri_scrapper_analysis/data/processed_data/naukri_job_listings_cleaned.csv')
+df = pd.read_csv('data/processed_data/naukri_job_listings_cleaned.csv')
 
 def get_location(df):
     df_new = pd.DataFrame()
@@ -97,6 +97,7 @@ def get_comman_location(x):
     else:
         return x.strip()
 
+@save_plot_decorator
 def plot_job_title_category():
     plt.figure(figsize=(10, 6))
     df['Job Title Category'].value_counts().plot(kind='bar', color='skyblue')
@@ -106,6 +107,7 @@ def plot_job_title_category():
     plt.xticks(rotation=45, ha='right')
     plt.show()
 
+@save_plot_decorator
 def plot_companies_with_highest_job_postings():
     company_counts = df['Company Name'].value_counts().head(5)
     plt.figure(figsize=(10, 6))
@@ -116,6 +118,7 @@ def plot_companies_with_highest_job_postings():
     plt.xticks(rotation=45, ha='right')
     plt.show()
 
+@save_plot_decorator
 def plot_location_distribution():
     Location_df = get_location(df)
     Location_df.columns = ['Location']
@@ -127,6 +130,7 @@ def plot_location_distribution():
     plt.title('Distribution of Top 15 Locations (Exploded)')
     plt.show()
 
+@save_plot_decorator
 def plot_experience_range():
     df.groupby('Experience Required', sort=True)['Experience Required'].count().sort_values(ascending=False)[0:15].plot.bar(color="orange")
     plt.xlabel('Job Exp Required in Years')
@@ -134,6 +138,7 @@ def plot_experience_range():
     plt.title('Distribution of Top 15 Job Experience Year Range Required')
     plt.show()
 
+@save_plot_decorator
 def plot_salary_difference():
     company_salary_stats = df.groupby('Company Name').agg({'Min Salary': 'min', 'Max Salary': 'max'}).reset_index()
     company_salary_stats['Salary_Difference'] = company_salary_stats['Max Salary'] - company_salary_stats['Min Salary']
@@ -146,6 +151,7 @@ def plot_salary_difference():
     plt.tight_layout()
     plt.show()
 
+@save_plot_decorator
 def plot_job_postings_per_month():
     df['TimeStamp'] = pd.to_datetime(df['TimeStamp'], errors='coerce')
     jobs_per_month = df.groupby(df['TimeStamp'].dt.to_period('M')).size().reset_index(name='Job Postings')
@@ -160,6 +166,7 @@ def plot_job_postings_per_month():
     plt.tight_layout()
     plt.show()
 
+@save_plot_decorator
 def plot_job_postings_per_day():
     df['Date'] = pd.to_datetime(df['TimeStamp'], errors='coerce').dt.date
     jobs_per_day = df.groupby('Date').size()
@@ -172,25 +179,22 @@ def plot_job_postings_per_day():
     plt.tight_layout()
     plt.show()
 
+@save_plot_decorator
 def plot_correlation_experience_salary():
     df['Min Salary'] = pd.to_numeric(df['Min Salary'], errors='coerce')
     df['Max Salary'] = pd.to_numeric(df['Max Salary'], errors='coerce')
 
-    # Extract the minimum and maximum experience from the 'Experience Required' column
     df['Experience_Min'] = df['Experience Required'].str.extract(r'(\d+)-\d+').astype(float)
     df['Experience_Max'] = df['Experience Required'].str.extract(r'\d+-(\d+)').astype(float)
 
-    # Filter the DataFrame to include only rows where 'Max Salary' is not zero
     filtered_df = df[df['Max Salary'] > 0]
 
-    # Calculate the correlation between experience and salary in the filtered DataFrame
     correlation_min = filtered_df[['Experience_Min', 'Min Salary']].corr().iloc[0, 1]
     correlation_max = filtered_df[['Experience_Max', 'Max Salary']].corr().iloc[0, 1]
 
     print(f"Correlation between Min Experience and Min Salary (filtered): {correlation_min}")
     print(f"Correlation between Max Experience and Max Salary (filtered): {correlation_max}")
 
-    # Plotting the correlation
     plt.figure(figsize=(10, 6))
     sns.scatterplot(x='Experience_Min', y='Min Salary', data=filtered_df, label='Min Experience vs Min Salary')
     sns.scatterplot(x='Experience_Max', y='Max Salary', data=filtered_df, label='Max Experience vs Max Salary', color='orange')
@@ -200,6 +204,7 @@ def plot_correlation_experience_salary():
     plt.legend()
     plt.show()
     
+@save_plot_decorator
 def plot_regression_experience_salary():
     plt.figure(figsize=(12, 6))
     sns.regplot(x='Experience_Min', y='Min Salary', data=df, scatter_kws={'s':50}, line_kws={'color':'red'})
@@ -215,6 +220,7 @@ def plot_regression_experience_salary():
     plt.ylabel('Max Salary')
     plt.show()
 
+@save_plot_decorator
 def plot_salary_clustering():
     kmeans = KMeans(n_clusters=3, random_state=0)
     df_cluster = df.dropna(subset=['Min Salary', 'Max Salary'])
@@ -227,6 +233,7 @@ def plot_salary_clustering():
     plt.ylabel('Max Salary')
     plt.show()
 
+@save_plot_decorator
 def plot_top_skills():
     skill_df = analyze_skills(df)
     top_skills = skill_df.head(20)
@@ -236,6 +243,7 @@ def plot_top_skills():
     squarify.plot(sizes=sizes, label=labels, color=colors, alpha=0.8, text_kwargs={'fontsize':8})
     plt.show()
 
+@save_plot_decorator
 def plot_word_cloud():
     skill_df = analyze_skills(df)
     word_freq = dict(zip(skill_df['Skill'], skill_df['Count']))
@@ -246,6 +254,7 @@ def plot_word_cloud():
     plt.title('Skills Word Cloud', fontsize=18)
     plt.show()
 
+@save_plot_decorator
 def plot_horizontal_company_reviews(highest_df, lowest_df):
     plt.figure(figsize=(14, 10))
     combined_df = pd.concat([
@@ -260,6 +269,7 @@ def plot_horizontal_company_reviews(highest_df, lowest_df):
     plt.tight_layout()
     plt.show()
 
+@save_plot_decorator
 def plot_company_reviews():
     highest_reviews, lowest_reviews = analyze_company_reviews(df)
     plot_horizontal_company_reviews(highest_reviews, lowest_reviews)

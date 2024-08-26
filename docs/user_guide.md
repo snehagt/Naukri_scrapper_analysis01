@@ -23,7 +23,7 @@ project_name/
 │   │   ├── custom_exceptions.py   # Custom exception classes
 │   │
 │   ├── enum/
-│   │   ├── global_enums.py        # Global enums and constants
+│   │   ├── enums.py        # Global enums and constants
 │   │
 │   └── menu/
 │       ├── menu.py                # Menu-driven program
