@@ -30,7 +30,7 @@ BeautifulSoup: For parsing HTML content.
 Selenium: For handling JavaScript-heavy sites.
 3. Data Storage & Processing:
 Pandas: For data manipulation and storage.
-SQLite or PostgreSQL: For storing scraped data if persistence is required.
+MYSQL: For storing scraped data if persistence is required.
 4. Data Visualization:
 Matplotlib: For basic plotting.
 Seaborn: For advanced statistical visualizations.
