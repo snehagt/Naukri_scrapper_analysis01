@@ -53,7 +53,7 @@ def save_to_excel(func):
                 func_name = func.__name__
                 hash_value = hashlib.md5(str(args).encode('utf-8')).hexdigest()[:6]
                 filename = kwargs.get("filename", f"{func_name}_{hash_value}.xlsx")
-                folder_path = "analysis_data"
+                folder_path = "data/analysis_data"
                 os.makedirs(folder_path, exist_ok=True)
                 full_path = os.path.join(folder_path, filename)
                 

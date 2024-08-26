@@ -46,11 +46,14 @@ def get_job_title_category(df):
     df['Job Title Category'] = df['Job Title'].apply(categorize_by_frequency)
     return df
 
+@log_function_call('logs/analysis_logs.log')
 def get_companies_with_highest_job_postings(df):
-    
+
     company_counts = df['Company Name'].value_counts()
     return company_counts
 
+@save_to_excel
+@log_function_call('logs/analysis_logs.log')
 def get_jobs_by_company(df, company_name):
     df['Company Name'] = df['Company Name'].str.title()
     filtered_df = df[df['Company Name'] == company_name]
