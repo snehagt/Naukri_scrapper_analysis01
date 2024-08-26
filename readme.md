@@ -54,6 +54,8 @@ Files involved:
 10. Analysis_data - analysis file
 11. docs - stores user guide and information for project
 
+Questions Answered - 
+
 1. What is the average salary offered by companies?
 2. Which companies are hiring the most?
 3. Which day of month has the highest job postings
